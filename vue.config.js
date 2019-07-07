@@ -1,12 +1,18 @@
 // var HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 
-const resolve = (dir) => {
+const resolve = dir => {
   return path.join(__dirname, dir);
 };
 
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
+  .BundleAnalyzerPlugin;
+
 module.exports = {
-  chainWebpack: (config) => {
+  configureWebpack: {
+    plugins: [new BundleAnalyzerPlugin()]
+  },
+  chainWebpack: config => {
     config.resolve.alias.set('@$', resolve('src'));
   },
   devServer: {
@@ -15,20 +21,12 @@ module.exports = {
       '/api': {
         target: process.env.baseUrl,
         changeOrigin: true,
-        pathRewrite: { '^/api': '' },
-      },
-    },
+        pathRewrite: { '^/api': '' }
+      }
+    }
   },
   css: {
     modules: false,
-    sourceMap: true,
-    loaderOptions: {
-      css: {
-        // 这里的选项会传递给 css-loader
-      },
-      postcss: {
-        // 这里的选项会传递给 postcss-loader
-      },
-    },
-  },
+    sourceMap: true
+  }
 };

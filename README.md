@@ -41,3 +41,15 @@ npm run lint
 [eslint-config-startdt](http://npm.startdt.com/package/@fe/eslint-config-startdt)
 
 git commit 时进行修复及检测
+
+## pages
+
+/src/views/\[name\].js
+
+## vuex
+
+/src/store/\[name\].js
+
+## router
+
+/src/plugins/router.js
