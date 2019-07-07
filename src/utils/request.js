@@ -1,5 +1,5 @@
 import { Notification } from 'element-ui';
-import axios from '../plugins/axios';
+import { create as axios } from 'axios';
 import router from '../plugins/router';
 
 const codeMessage = {
@@ -42,15 +42,13 @@ const checkStatus = (response) => {
 
 // 请求返回内容的返回码校验
 const checkCodeNum = ({ data }) => {
-  const {
-    codeNum, codeDesc, value, success,
-  } = data;
+  const { codeNum, codeDesc, value, success } = data;
 
   // 用户 session 过期
   if (
-    codeNum === 3101
-    && (localStorage.getItem('Redireced') === 'undefined'
-    || localStorage.getItem('Redireced') === 'false')
+    codeNum === 3101 &&
+    (localStorage.getItem('Redireced') === 'undefined' ||
+      localStorage.getItem('Redireced') === 'false')
   ) {
     localStorage.setItem('Redireced', 'true'); // 防止多次重定向
 
@@ -79,12 +77,14 @@ const checkCodeNum = ({ data }) => {
  * Requests a URL, returning a promise.
  *
  * @param  {string} url       The URL we want to request
- * @param  {object} [option] The options we want to pass to "fetch"
+ * @param  {object} [options] The options we want to pass to "fetch"
  * @return {object}           An object containing either "data" or "err"
  */
 export default function request(url, options) {
   // 根据运行环境切换 api 接口
-  const requestURL = url.replace('/api', process.env.VUE_APP_BASE_URL).replace('/dvm', '');
+  const requestURL = url
+      .replace('/api', process.env.baseUrl)
+      .replace('/dvm', '');
 
   const defaultOptions = {
     credentials: 'include',
@@ -94,13 +94,13 @@ export default function request(url, options) {
   };
   const newOptions = { ...defaultOptions, ...options };
   if (
-    newOptions.method === 'POST'
-    || newOptions.method === 'PUT'
-    || newOptions.method === 'PATCH'
+    newOptions.method === 'POST' ||
+    newOptions.method === 'PUT' ||
+    newOptions.method === 'PATCH'
   ) {
     if (!(newOptions.data instanceof FormData)) {
       newOptions.headers = {
-        Accept: 'application/json',
+        'Accept': 'application/json',
         'Content-Type': 'application/json; charset=utf-8',
         ...newOptions.headers,
       };
@@ -119,15 +119,18 @@ export default function request(url, options) {
     if (requestURL.includes('token')) {
       window.open(`${requestURL}`, '_self');
     } else {
-      window.open(`${requestURL}?token=${localStorage.getItem('token')}`, '_self');
+      window.open(
+          `${requestURL}?token=${localStorage.getItem('token')}`,
+          '_self'
+      );
     }
     return {};
   }
   return axios(requestURL, newOptions)
-    .then(checkStatus)
-    .then(checkCodeNum)
-    .catch((e) => {
-      console.error(e);
+      .then(checkStatus)
+      .then(checkCodeNum)
+      .catch((e) => {
+        console.error(e);
       // const status = e.name;
       // if (status === 401) {
       //   // @HACK
@@ -149,5 +152,5 @@ export default function request(url, options) {
       // if (status >= 404 && status < 422) {
       //   router.push('/exception/404');
       // }
-    });
+      });
 }

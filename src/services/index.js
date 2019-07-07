@@ -1,8 +1,12 @@
-import request from '@/src/utils/request';
 import { stringify } from '@fe/common-utils';
+import request from '@/utils/request';
 
-export async function example(param) {
-  return request(`/api/v1/${projectCode}/example?${stringify(param)}`, {
+/**
+ * @param {Object} param
+ *
+ */
+export default async function example(param) {
+  return request(`/api/v1/example?${stringify(param)}`, {
     method: 'get'
   });
 }

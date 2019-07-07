@@ -5,8 +5,6 @@
 </template>
 
 
-
-
 <style lang="less">
 h1 {
   font-size: 300px;

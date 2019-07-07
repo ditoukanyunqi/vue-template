@@ -1,18 +1,17 @@
 // var HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 
-const resolve = dir => {
+const resolve = (dir) => {
   return path.join(__dirname, dir);
 };
 
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
-  .BundleAnalyzerPlugin;
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
 module.exports = {
   configureWebpack: {
-    plugins: [new BundleAnalyzerPlugin()]
+    plugins: [new BundleAnalyzerPlugin()],
   },
-  chainWebpack: config => {
+  chainWebpack: (config) => {
     config.resolve.alias.set('@$', resolve('src'));
   },
   devServer: {
@@ -21,12 +20,12 @@ module.exports = {
       '/api': {
         target: process.env.baseUrl,
         changeOrigin: true,
-        pathRewrite: { '^/api': '' }
-      }
-    }
+        pathRewrite: { '^/api': '' },
+      },
+    },
   },
   css: {
     modules: false,
-    sourceMap: true
-  }
+    sourceMap: true,
+  },
 };

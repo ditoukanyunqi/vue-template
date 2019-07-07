@@ -6,8 +6,8 @@ module.exports = {
       'component',
       {
         libraryName: 'element-ui',
-        styleLibraryName: 'theme-chalk'
-      }
+        styleLibraryName: 'theme-chalk',
+      },
     ],
     [
       'import',
@@ -15,11 +15,11 @@ module.exports = {
         libraryName: '@fe/common-utils',
         camel2DashComponentName: false, // 是否需要驼峰转短线
         camel2UnderlineComponentName: false, // 是否需要驼峰转下划线
-        customName: name => {
+        customName: (name) => {
           console.log(name);
           return `@fe/common-utils/${name}`;
-        }
-      }
-    ]
-  ]
+        },
+      },
+    ],
+  ],
 };
